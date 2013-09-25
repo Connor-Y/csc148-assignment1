@@ -65,6 +65,8 @@ class CheeseView(Cheese):
         self.x_center = x_center
         self.y_center = y_center
 
+        self.coordinates = (0, 0, 0, 0)
+
         # Create a rectangle on the canvas, and record the index that tkinter
         # uses to refer to it.
         self.index = canvas.create_rectangle(0, 0, 0, 0)
@@ -89,3 +91,7 @@ class CheeseView(Cheese):
 
         self.canvas.itemconfigure(self.index,
                                   fill=('red' if highlighting else 'orange'))
+
+    def place(x_center: float, y_center: float) -> None:
+        self.coordinates = (x_center - self.size/2, y_center + self.thickness/2, x_center + self.size/2, y_center - self.thickness/2)
+        self.canvas.coords(self.index, self.coordinates)
