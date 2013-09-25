@@ -56,9 +56,14 @@ class CheeseView(Cheese):
 
         # TODO:
         # Call the superclass constructor appropriately.
+        super().__init__()
 
         # TODO:
         # Store canvas, thickness, x_center and y_center in instance variables.
+        self.canvas = canvas
+        self.thickness = thickness
+        self.x_center = x_center
+        self.y_center = y_center
 
         # Create a rectangle on the canvas, and record the index that tkinter
         # uses to refer to it.
