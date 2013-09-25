@@ -29,22 +29,53 @@ class DomainStools:
     """
 
     # TODO: See Steps 2 and 3 of the handout.
-    def __init__(self: 'DomainStools', number_of_stools: int) -> None:
-        self.number_of_stools = number_of_stools
+    def __init__(self: 'DomainStools', num_of_stools: int) -> None:
+        self.num_of_stools = num_of_stools
+        self.num_of_moves = 0
+        self.stool_list = []
+        for x in range(self.num_of_stools):
+            self.stool_list.append([])
 
-    def number_of_stools() -> int:
+    def number_of_stools(self: 'DomainStools') -> int:
         """Returns the number of stools in DomainStools."""
-        return self.number_of_stools
+        return self.num_of_stools
 
-    def add(stool, cheese):
-        pass
+    def add(self: 'DomainStools', stool, cheese):
+        self.stool_list[stool].append(cheese)
 
-    def number_of_moves():
-        pass
+    def number_of_moves(self: 'DomainStools'):
+        return self.num_of_moves
 
-    def move(cheese_to_move, cheese):
-        pass
-    pass
+    def move(self: 'DomainStools', cheese_to_move: 'CheeseView', cheese: 'CheeseView') -> None:
+        self.num_of_moves += 1
+        #check that cheese_to_move is on the top of its current stool
+        stool_of_cheese_to_move = -1
+        for stool_index, stool in enumerate(self.stool_list):
+            if cheese_to_move is stool[-1]:
+                stool_of_cheese_to_move = stool_index
+        if stool_of_cheese_to_move == -1:
+            print("cheese_to_move is not on top")
+            raise Exception
+
+        #check that cheese is on the top of its current stool
+        stool_of_cheese = -1
+        for stool_index, stool in enumerate(self.stool_list):
+            if cheese is stool[-1]:
+                stool_of_cheese = stool_index
+        if stool_of_cheese == -1:
+            print("cheese to move onto is not on top")
+            raise Exception
+
+        #check if size of cheese_to_move is smaller than cheese
+        if cheese_to_move.size > cheese.size:
+            print("cheese size is incorrect")
+            raise Exception
+
+
+        #finally, move cheese
+        self.stool_list[stool_of_cheese].append(self.stool_list[stool_of_cheese_to_move][-1])
+        del self.stool_list[stool_of_cheese_to_move][-1]
+
 
 
 class Cheese:

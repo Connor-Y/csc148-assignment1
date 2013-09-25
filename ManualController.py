@@ -50,9 +50,11 @@ class ManualController:
         self.cheese_scale = cheese_scale
 
         self.root = TI.Tk()
+        #creating variable canvas
         canvas = TI.Canvas(self.root,
                            background="blue",
                            width=content_width, height=content_height)
+
         canvas.pack(expand=True, fill=TI.BOTH)
 
         self.moves_label = TI.Label(self.root)
@@ -74,6 +76,9 @@ class ManualController:
                                     - total_size)
                 self.domain.add(stool, cheese)
                 total_size += self.cheese_scale
+
+
+
 
     def show_number_of_moves(self: 'ManualController'):
         """Show the number of moves so far."""
@@ -97,7 +102,6 @@ class ManualController:
 
            cheese - cheese to select for moving, or to try moving onto.
         """
-
         if self.cheese_to_move is None:
             self.cheese_to_move = cheese
             self.cheese_to_move.highlight(True)
@@ -105,9 +109,13 @@ class ManualController:
             if cheese is not self.cheese_to_move:
                 try:
                     self.domain.move(self.cheese_to_move, cheese)
+                    print("old cheese to move's x_center: " + str(self.cheese_to_move.x_center))
+                    print("old target cheese's x_center: " + str(cheese.x_center))
                     self.cheese_to_move.place(cheese.x_center,
                                               cheese.y_center
                                               - self.cheese_scale)
+                    print("new cheese to move's x_center: " + str(self.cheese_to_move.x_center))
+                    print("new target cheese's x_center: " + str(cheese.x_center))
                     self.show_number_of_moves()
                 except:
                     self.blinking = True

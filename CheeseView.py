@@ -56,7 +56,7 @@ class CheeseView(Cheese):
 
         # TODO:
         # Call the superclass constructor appropriately.
-        super().__init__()
+        super().__init__(size)
 
         # TODO:
         # Store canvas, thickness, x_center and y_center in instance variables.
@@ -84,7 +84,7 @@ class CheeseView(Cheese):
                              '<ButtonRelease>',
                              lambda _: click_handler(self))
 
-    def highlight(self: 'CheeseView', highlighting: bool):
+    def highlight(self: 'CheeseView', highlighting: bool) -> None:
         """Set this CheeseView's colour to highlighted or not.
 
            highlighting - whether to highlight"""
@@ -92,6 +92,13 @@ class CheeseView(Cheese):
         self.canvas.itemconfigure(self.index,
                                   fill=('red' if highlighting else 'orange'))
 
-    def place(x_center: float, y_center: float) -> None:
-        self.coordinates = (x_center - self.size/2, y_center + self.thickness/2, x_center + self.size/2, y_center - self.thickness/2)
+    def place(self: 'CheeseView', x_center: float, y_center: float) -> None:
+        self.x_center = x_center
+        self.y_center = y_center
+        self.coordinates = (self.x_center - self.size/2, self.y_center + self.thickness/2, self.x_center + self.size/2, self.y_center - self.thickness/2)
         self.canvas.coords(self.index, self.coordinates)
+
+
+
+
+
