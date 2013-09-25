@@ -29,6 +29,21 @@ class DomainStools:
     """
 
     # TODO: See Steps 2 and 3 of the handout.
+    def __init__(self: 'DomainStools', number_of_stools: int) -> None:
+        self.number_of_stools = number_of_stools
+
+    def number_of_stools() -> int:
+        """Returns the number of stools in DomainStools."""
+        return self.number_of_stools
+
+    def add(stool, cheese):
+        pass
+
+    def number_of_moves():
+        pass
+
+    def move(cheese_to_move, cheese):
+        pass
     pass
 
 
