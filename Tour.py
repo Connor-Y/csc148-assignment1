@@ -17,7 +17,7 @@
 # along with this file.  If not, see <http://www.gnu.org/licenses/>.
 from DomainStools import DomainStools
 from DomainStools import Cheese
-
+from math import random
 
 def tour_of_four_stools(n: int, stools: DomainStools) -> None:
     """Move an n cheese tower from the first stool in stools to the fourth.
@@ -26,13 +26,17 @@ def tour_of_four_stools(n: int, stools: DomainStools) -> None:
        stools - a DomainStools with a tower of cheese on the first stool
                 and three other empty stools
     """
-
     pass
+
+def tour_of_three_stools(n: int, stools: DomainStools) -> None:
+
 
 
 if __name__ == '__main__':
-    four_stools = DomainStools(4)
-    for s in range(5, 0, -1):
-        four_stools.add(0, Cheese(s))
-    tour_of_four_stools(5, four_stools)
-    print(four_stools.number_of_moves())
+    #four_stools = DomainStools(4)
+    #for s in range(5, 0, -1):
+    #    four_stools.add(0, Cheese(s))
+    #tour_of_four_stools(5, four_stools)
+    #print(four_stools.number_of_moves())
+
+    three_stools = DomainStools(3)

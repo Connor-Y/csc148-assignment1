@@ -128,5 +128,5 @@ class ManualController:
             self.cheese_to_move = None
 
 if __name__ == '__main__':
-    ManualController(5, 4, 1024, 320, 20)
+    ManualController(6, 4, 1024, 320, 20)
     TI.mainloop()

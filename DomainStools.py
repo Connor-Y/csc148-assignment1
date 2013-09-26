@@ -40,8 +40,12 @@ class DomainStools:
         """Returns the number of stools in DomainStools."""
         return self.num_of_stools
 
-    def add(self: 'DomainStools', stool, cheese):
+    def num_of_cheese_on_stool(self: 'DomainStools', stool_num: int) -> int:
+        return len(self.stool_list[stool_num])
+
+    def add(self: 'DomainStools', stool, cheese) -> None:
         self.stool_list[stool].append(cheese)
+        return None
 
     def number_of_moves(self: 'DomainStools'):
         return self.num_of_moves
