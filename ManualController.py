@@ -109,13 +109,13 @@ class ManualController:
             if cheese is not self.cheese_to_move:
                 try:
                     self.domain.move(self.cheese_to_move, cheese)
-                    print("old cheese to move's x_center: " + str(self.cheese_to_move.x_center))
-                    print("old target cheese's x_center: " + str(cheese.x_center))
+                    #print("old cheese to move's x_center: " + str(self.cheese_to_move.x_center))
+                    #print("old target cheese's x_center: " + str(cheese.x_center))
                     self.cheese_to_move.place(cheese.x_center,
                                               cheese.y_center
                                               - self.cheese_scale)
-                    print("new cheese to move's x_center: " + str(self.cheese_to_move.x_center))
-                    print("new target cheese's x_center: " + str(cheese.x_center))
+                    #print("new cheese to move's x_center: " + str(self.cheese_to_move.x_center))
+                    #print("new target cheese's x_center: " + str(cheese.x_center))
                     self.show_number_of_moves()
                 except:
                     self.blinking = True
@@ -128,5 +128,5 @@ class ManualController:
             self.cheese_to_move = None
 
 if __name__ == '__main__':
-    ManualController(6, 4, 1024, 320, 20)
+    ManualController(4, 4, 1024, 320, 20)
     TI.mainloop()

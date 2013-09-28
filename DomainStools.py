@@ -19,7 +19,7 @@
 DomainStools:  Model Anne Hoy's stools holding cheeses.
 Cheese:   Model a cheese with a given size
 """
-
+import sys
 
 class DomainStools:
     """Model Anne Hoy's stools holding cheese.
@@ -35,6 +35,8 @@ class DomainStools:
         self.stool_list = []
         for x in range(self.num_of_stools):
             self.stool_list.append([])
+        for stool in range(self.num_of_stools):
+            self.stool_list[stool].append(Cheese(sys.maxsize))
 
     def number_of_stools(self: 'DomainStools') -> int:
         """Returns the number of stools in DomainStools."""
@@ -51,14 +53,13 @@ class DomainStools:
         return self.num_of_moves
 
     def move(self: 'DomainStools', cheese_to_move: 'CheeseView', cheese: 'CheeseView') -> None:
-        self.num_of_moves += 1
         #check that cheese_to_move is on the top of its current stool
         stool_of_cheese_to_move = -1
         for stool_index, stool in enumerate(self.stool_list):
             if cheese_to_move is stool[-1]:
                 stool_of_cheese_to_move = stool_index
         if stool_of_cheese_to_move == -1:
-            print("cheese_to_move is not on top")
+           # print("cheese_to_move is not on top")
             raise Exception
 
         #check that cheese is on the top of its current stool
@@ -67,20 +68,21 @@ class DomainStools:
             if cheese is stool[-1]:
                 stool_of_cheese = stool_index
         if stool_of_cheese == -1:
-            print("cheese to move onto is not on top")
+         #   print("cheese to move onto is not on top")
             raise Exception
 
         #check if size of cheese_to_move is smaller than cheese
         if cheese_to_move.size > cheese.size:
-            print("cheese size is incorrect")
+         #   print("cheese size is incorrect")
             raise Exception
-
 
         #finally, move cheese
         self.stool_list[stool_of_cheese].append(self.stool_list[stool_of_cheese_to_move][-1])
         del self.stool_list[stool_of_cheese_to_move][-1]
+        self.num_of_moves += 1
 
-
+    def select_top_cheese(self: 'DomainStools', stool_idx):
+        return self.stool_list[stool_idx][-1]
 
 class Cheese:
     def __init__(self: 'Cheese', size: float) -> None:
