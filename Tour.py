@@ -26,60 +26,37 @@ def tour_of_four_stools(n: int, stools: DomainStools) -> None:
        stools - a DomainStools with a tower of cheese on the first stool
                 and three other empty stools
     """
-    if n > 1:
+    tour_helper(n, stools, 0, 1, 2, 3)
+
+
+def tour_helper(n: int, stools: DomainStools, input: int, aux1: int, aux2: int, output: int) -> None:
+    if n == 1:
+        stools.select_top_cheese(input), stools.select_top_cheese(output)
+    else:
         i = 1
-        tour_of_four_stools(n-i, stools)
-        tour_of_three_stools(i, stools)
-        
+        tour_helper(n-i, stools, input, aux2, output, aux1)
+        tour_of_three_stools(i, stools, input, aux2, output)
+        tour_helper(n-i, stools, aux1, input, aux2, output)
 
 
-def tour_of_three_stools(n: int, stools: DomainStools) -> None:
-    print("Tour of stools called")
-    while stools.num_of_cheese_on_stool(2) != n+1:
-        if n%2==0:
-            try:
-                stools.move(stools.select_top_cheese(0), stools.select_top_cheese(1))
-            except:
-                stools.move(stools.select_top_cheese(1), stools.select_top_cheese(0))
-            try:
-                stools.move(stools.select_top_cheese(0), stools.select_top_cheese(2))
-            except:
-                stools.move(stools.select_top_cheese(2), stools.select_top_cheese(0))
-            try:
-                stools.move(stools.select_top_cheese(1), stools.select_top_cheese(2))
-            except:
-                stools.move(stools.select_top_cheese(2), stools.select_top_cheese(1))
-        else:
-            try:
-                stools.move(stools.select_top_cheese(0), stools.select_top_cheese(2))
-            except:
-                stools.move(stools.select_top_cheese(2), stools.select_top_cheese(0))
-            if stools.num_of_cheese_on_stool(2) == n+1:
-                break
-            try:
-                stools.move(stools.select_top_cheese(0), stools.select_top_cheese(1))
-            except:
-                stools.move(stools.select_top_cheese(1), stools.select_top_cheese(0))
-            try:
-                stools.move(stools.select_top_cheese(2), stools.select_top_cheese(1))
-            except:
-                stools.move(stools.select_top_cheese(1), stools.select_top_cheese(2))
-    print("tower of hanoi completed.")
-    print("Stool 1, number of cheeses: " + str(stools.num_of_cheese_on_stool(0)))
-    print("Stool 2, number of cheeses: " + str(stools.num_of_cheese_on_stool(1)))
-    print("Stool 3, number of cheeses: " + str(stools.num_of_cheese_on_stool(2)))
-
+def tour_of_three_stools(n: int, stools: DomainStools, input: int, aux: int, output: int) -> None:
+    if n == 1:
+        stools.move(stools.select_top_cheese(input), stools.select_top_cheese(output))
+    else:
+        tour_of_three_stools(n-1, stools, input, output, aux)
+        tour_of_three_stools(1, stools, input, aux, output)
+        tour_of_three_stools(n-1, stools, aux, input, output)
 
 if __name__ == '__main__':
-    #four_stools = DomainStools(4)
-    #for s in range(5, 0, -1):
-    #    four_stools.add(0, Cheese(s))
-    #tour_of_four_stools(5, four_stools)
-    #print(four_stools.number_of_moves())
+    four_stools = DomainStools(4)
+    for s in range(6, 0, -1):
+        four_stools.add(0, Cheese(s))
+    tour_of_four_stools(6, four_stools)
+    print(four_stools.number_of_moves())
 
-    three_stools = DomainStools(3)
-    for s in range(15, 0, -1):
-        three_stools.add(0, Cheese(s))
-    tour_of_three_stools(15, three_stools)
-    print(three_stools.number_of_moves())
+    #three_stools = DomainStools(3)
+    #for s in range(15, 0, -1):
+    #    three_stools.add(0, Cheese(s))
+    #tour_of_three_stools(15, three_stools, 0, 1, 2)
+    #print(three_stools.number_of_moves())
 
