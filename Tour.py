@@ -31,9 +31,9 @@ def tour_of_four_stools(n: int, stools: DomainStools) -> None:
 
 def tour_helper(n: int, stools: DomainStools, input: int, aux1: int, aux2: int, output: int) -> None:
     if n == 1:
-        stools.select_top_cheese(input), stools.select_top_cheese(output)
+        stools.move(stools.select_top_cheese(input), stools.select_top_cheese(output))
     else:
-        i = 1
+        i = n-1
         tour_helper(n-i, stools, input, aux2, output, aux1)
         tour_of_three_stools(i, stools, input, aux2, output)
         tour_helper(n-i, stools, aux1, input, aux2, output)
