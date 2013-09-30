@@ -78,7 +78,8 @@ class SolvingController:
                                     - total_size)
                 self.domain.add(stool, cheese)
                 total_size += self.cheese_scale
-        #self.solve(number_of_cheeses, self.domain, 0, 1, 2, 3)
+
+        self.solve(number_of_cheeses, self.domain, 0, 1, 2, 3)
 
     def show_number_of_moves(self: 'SolvingController'):
         """Show the number of moves so far."""
@@ -150,8 +151,5 @@ class SolvingController:
         return None
 
 if __name__ == '__main__':
-    f = SolvingController(4, 1024, 320, 20, 1)
+    SolvingController(4, 1024, 320, 20, 1)
     TI.mainloop()
-    f.solve(f.number_of_cheeses, f.domain, 0, 1, 2, 3)
-
-

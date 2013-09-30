@@ -54,11 +54,9 @@ class CheeseView(Cheese):
         y_center - center of this cheese vertically
         """
 
-        # TODO:
         # Call the superclass constructor appropriately.
         super().__init__(size)
 
-        # TODO:
         # Store canvas, thickness, x_center and y_center in instance variables.
         self.canvas = canvas
         self.thickness = thickness
@@ -95,10 +93,6 @@ class CheeseView(Cheese):
     def place(self: 'CheeseView', x_center: float, y_center: float) -> None:
         self.x_center = x_center
         self.y_center = y_center
+
         self.coordinates = (self.x_center - self.size/2, self.y_center + self.thickness/2, self.x_center + self.size/2, self.y_center - self.thickness/2)
         self.canvas.coords(self.index, self.coordinates)
-
-
-
-
-
