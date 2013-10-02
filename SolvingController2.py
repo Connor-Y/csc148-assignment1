@@ -79,9 +79,8 @@ class SolvingController:
                                     - total_size)
                 self.domain.add(stool, cheese)
                 total_size += self.cheese_scale
+
         #self.solve(number_of_cheeses, self.domain, 0, 1, 2, 3)
-        self.root.after_idle(self.animate())
-        self.root.mainloop()
 
     def show_number_of_moves(self: 'SolvingController'):
         """Show the number of moves so far."""
@@ -95,9 +94,7 @@ class SolvingController:
 
            cheese - clicked cheese
         """
-
         pass
-
 
     def select(self: 'SolvingController', cheese: CheeseView):
         """If no cheese is selected to move, select cheese and highlight it.
@@ -130,35 +127,31 @@ class SolvingController:
             self.cheese_to_move = None
 
 
-    def solve(self: 'SolvingController', n: int, stools: DomainStools, input: int, aux1: int, aux2: int, output: int) -> None:
-        if n == 1:
-            self.select(stools.select_top_cheese(input))
-            time.sleep(self.time_delay)
-            self.select(stools.select_top_cheese(output))
-        else:
-            i = math.ceil(n/2)
-            self.solve(n-i, stools, input, aux2, output, aux1)
-            self.tour_of_three_stools(i, stools, input, aux2, output)
-            self.solve(n-i, stools, aux1, input, aux2, output)
-        return None
+def solve(solver: 'SolvingController', n: int, stools: DomainStools, inp: int, aux1: int, aux2: int, output: int) -> None:
+    if n == 1:
+        solver.select(stools.select_top_cheese(inp))
+        time.sleep(solver.time_delay)
+        solver.select(stools.select_top_cheese(output))
+    else:
+        i = math.ceil(n/2)
+        solve(solver, n-i, stools, inp, aux2, output, aux1)
+        tour_of_three_stools(solver, i, stools, inp, aux2, output)
+        solve(solver, n-i, stools, aux1, inp, aux2, output)
+    return None
 
 
-    def tour_of_three_stools(self: 'SolvingController', n: int, stools: DomainStools, input: int, aux: int, output: int) -> None:
-        if n == 1:
-            self.select(stools.select_top_cheese(input))
-            #time.sleep(self.time_delay)
-            self.select(stools.select_top_cheese(output))
-        else:
-            self.tour_of_three_stools(n-1, stools, input, output, aux)
-            self.tour_of_three_stools(1, stools, input, aux, output)
-            self.tour_of_three_stools(n-1, stools, aux, input, output)
-        return None
-
-    def animate(self: 'SolvingController', event=None):
-        #self.solve(self.number_of_cheeses, self.domain, 0, 1, 2, 3)
-        self.select(self.domain.select_top_cheese(0))
-        self.select(self.domain.select_top_cheese(1))
+def tour_of_three_stools(solver: 'SolvingController', n: int, stools: DomainStools, inp: int, aux: int, output: int) -> None:
+    if n == 1:
+        solver.select(stools.select_top_cheese(inp))
+        time.sleep(solver.time_delay)
+        solver.select(stools.select_top_cheese(output))
+    else:
+        tour_of_three_stools(solver, n-1, stools, inp, output, aux)
+        tour_of_three_stools(solver, 1, stools, inp, aux, output)
+        tour_of_three_stools(solver, n-1, stools, aux, inp, output)
+    return None
 
 if __name__ == '__main__':
-    SolvingController(10, 1024, 320, 20, 1)
-
+    f = SolvingController(6, 1024, 320, 20, 1)
+    solve(f, f.number_of_cheeses, f.domain, 0, 1, 2, 3)
+    TI.mainloop()
