@@ -83,16 +83,32 @@ class CheeseView(Cheese):
                              lambda _: click_handler(self))
 
     def highlight(self: 'CheeseView', highlighting: bool) -> None:
-        """Set this CheeseView's colour to highlighted or not.
+        """
+        Set this CheeseView's colour to highlighted or not.
 
-           highlighting - whether to highlight"""
+        highlighting - whether to highlight
+        """
 
         self.canvas.itemconfigure(self.index,
                                   fill=('red' if highlighting else 'orange'))
 
     def place(self: 'CheeseView', x_center: float, y_center: float) -> None:
+        """
+        Used to place "cheese" blocks onto the canvas.
+        
+        x_center - center of cheese horizontally
+        y_center - center of cheese vertically
+        """
+        # Store x_center and y_center in instance variables.
         self.x_center = x_center
         self.y_center = y_center
+        
+        # Set the coordinates of the cheese to be placed as an
+        # instance variable.
+        self.coordinates = (self.x_center - self.size/2, self.y_center
+                            + self.thickness/2, self.x_center +
+                            self.size/2, self.y_center -
+                            self.thickness/2)
 
-        self.coordinates = (self.x_center - self.size/2, self.y_center + self.thickness/2, self.x_center + self.size/2, self.y_center - self.thickness/2)
+        # Positions the "cheese" block onto the canvas.
         self.canvas.coords(self.index, self.coordinates)

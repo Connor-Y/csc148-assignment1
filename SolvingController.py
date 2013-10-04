@@ -80,7 +80,7 @@ class SolvingController:
                 self.domain.add(stool, cheese)
                 total_size += self.cheese_scale
         #self.solve(number_of_cheeses, self.domain, 0, 1, 2, 3)
-        self.root.after_idle(self.animate())
+        self.root.after(0, self.animate())
         self.root.mainloop()
 
     def show_number_of_moves(self: 'SolvingController'):
