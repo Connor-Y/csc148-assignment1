@@ -44,15 +44,12 @@ class SolvingController:
         """
 
         self.domain = DomainStools(4)
-
         self.cheese_to_move = None
         self.blinking = False
-
         self.cheese_scale = cheese_scale
         self.time_delay = time_delay
         self.number_of_cheeses = number_of_cheeses
-
-        self.root = TI.Tk()
+        self.root = TI.Tk()        
         #creating variable canvas
         canvas = TI.Canvas(self.root,
                            background="blue",
@@ -110,18 +107,17 @@ class SolvingController:
             if cheese is not self.cheese_to_move:
                 try:
                     self.domain.move(self.cheese_to_move, cheese)
-
                     self.cheese_to_move.place(cheese.x_center,
                                               cheese.y_center
                                               - self.cheese_scale)
-
                     self.show_number_of_moves()
+                    self.root.update()
                 except:
                     self.blinking = True
                     for i in range(10):
                         self.cheese_to_move.highlight(i % 2 != 0)
                         self.root.update()
-                        time.sleep(0.1)
+                        time.sleep(0.01)
                     self.blinking = False
             self.cheese_to_move.highlight(False)
             self.cheese_to_move = None
