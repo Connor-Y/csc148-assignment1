@@ -24,13 +24,14 @@ from CheeseView import CheeseView
 import tkinter as TI
 import time
 import math
+from i_solver2 import *
 
 
 class SolvingController:
     def __init__(self: 'SolvingController',
                  number_of_cheeses: int,
                  content_width: float, content_height: float,
-                 cheese_scale: float, time_delay: float):
+                 cheese_scale: float, time_delay: float, i_tup: tuple):
         """
         Initialize a new SolvingController.
 
@@ -41,13 +42,17 @@ class SolvingController:
         cheese_scale - height in pixels for showing cheese thicknesses,
                        and to scale cheese diameters
         time_delay - number of seconds to pause b/w highlighting a cheese to move and moving it
+        i_tup - optimal value of i for the split for a given n
         """
-
+        
+        self.usi_tup = i_tup
         self.domain = DomainStools(4)
         self.cheese_to_move = None
         self.blinking = False
         self.cheese_scale = cheese_scale
         self.time_delay = time_delay
+        #Used to store optimal i value and according number of moves
+        self.store_i = {}
         self.number_of_cheeses = number_of_cheeses
         self.root = TI.Tk()        
         #creating variable canvas
@@ -132,19 +137,26 @@ def solve(solver: 'SolvingController',
     output - target goal for cheese
     """ 
     
+    #If there is only one cheese left, move from current position to goal 
     if n == 1:
         solver.select(stools.select_top_cheese(inp))
         time.sleep(solver.time_delay)
         solver.select(stools.select_top_cheese(output))
     else:
-        i = math.ceil(n/2)
+        i = i_tup[n-2]
+        #Move n-i cheeses to intermediate stool using 4 stools
         solve(solver, n-i, stools, inp, aux2, output, aux1)
+        #Move i cheeses to goal stool using 3 stools
         tour_of_three_stools(solver, i, stools, inp, aux2, output)
+        #Move remaining n-i cheeses to goal stool using 4 stools
         solve(solver, n-i, stools, aux1, inp, aux2, output)
     return None
 
 
-def tour_of_three_stools(solver: 'SolvingController', n: int, stools: DomainStools, inp: int, aux: int, output: int) -> None:
+def tour_of_three_stools(solver: 'SolvingController',
+                         n: int, 
+                         stools: DomainStools, 
+                         inp: int, aux: int, output: int) -> None:
     """
     Recursive function that determines which moves to make to solve the
     Tower of Hanoi (3 stools)
@@ -152,20 +164,26 @@ def tour_of_three_stools(solver: 'SolvingController', n: int, stools: DomainStoo
     n - Total number of cheeses that are not solved
     stools -  Model Anne Hoy's stools holding cheeses
     inp - input which cheese to be moved
-    aux1, aux2 - middle stools used to move cheeses
-    output     
+    aux1 - middle stool used to move cheeses
+    output - target goal for cheese    
     """
+    #If there is only one cheese left, move from current position to goal
     if n == 1:
         solver.select(stools.select_top_cheese(inp))
         time.sleep(solver.time_delay)
         solver.select(stools.select_top_cheese(output))
     else:
+        #Move n-1 cheeses to auxiliary stool
         tour_of_three_stools(solver, n-1, stools, inp, output, aux)
+        #Move single remaining cheese to goal stool
         tour_of_three_stools(solver, 1, stools, inp, aux, output)
+        #Move remaining cheeses to goal stool
         tour_of_three_stools(solver, n-1, stools, aux, inp, output)
     return None
 
 if __name__ == '__main__':
-    f = SolvingController(6, 1024, 320, 20, 1)
+    num_cheeses = 10
+    i_tup = tuple(final_i(num_cheeses))
+    f = SolvingController(num_cheeses, 1024, 320, 20, 1, i_tup)
     solve(f, f.number_of_cheeses, f.domain, 0, 1, 2, 3)
     TI.mainloop()
