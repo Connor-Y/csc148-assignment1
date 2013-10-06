@@ -60,7 +60,7 @@ class SolvingController:
         self.moves_label = TI.Label(self.root)
         self.show_number_of_moves()
         self.moves_label.pack()
-
+        #Adding desired number of cheeses to the first stool
         for stool in range(self.domain.number_of_stools()):
             total_size = 0
             for size in range(1 + (number_of_cheeses if stool == 0 else 0)):
@@ -76,8 +76,6 @@ class SolvingController:
                                     - total_size)
                 self.domain.add(stool, cheese)
                 total_size += self.cheese_scale
-
-        #self.solve(number_of_cheeses, self.domain, 0, 1, 2, 3)
 
     def show_number_of_moves(self: 'SolvingController'):
         """Show the number of moves so far."""
@@ -100,31 +98,40 @@ class SolvingController:
 
            cheese - cheese to select for moving, or to try moving onto.
         """
+        #If no cheese is currently selected, select and highlight the 
+        #selected cheese
+        self.root.update()
+        time.sleep(self.time_delay)
         if self.cheese_to_move is None:
             self.cheese_to_move = cheese
             self.cheese_to_move.highlight(True)
         else:
+            #If the cheese you are trying to move to is not the selected cheese
             if cheese is not self.cheese_to_move:
-                try:
-                    self.root.update()
-                    self.domain.move(self.cheese_to_move, cheese)
-                    self.cheese_to_move.place(cheese.x_center,
-                                              cheese.y_center
-                                              - self.cheese_scale)
-                    self.show_number_of_moves()
-                    #self.root.update()
-                except:
-                    self.blinking = True
-                    for i in range(10):
-                        self.cheese_to_move.highlight(i % 2 != 0)
-                        self.root.update()
-                        time.sleep(0.01)
-                    self.blinking = False
+                self.domain.move(self.cheese_to_move, cheese)
+                self.cheese_to_move.place(cheese.x_center,
+                                          cheese.y_center
+                                          - self.cheese_scale)
+                self.show_number_of_moves()
             self.cheese_to_move.highlight(False)
             self.cheese_to_move = None
 
 
-def solve(solver: 'SolvingController', n: int, stools: DomainStools, inp: int, aux1: int, aux2: int, output: int) -> None:
+def solve(solver: 'SolvingController', 
+          n: int, 
+          stools: DomainStools,
+          inp: int, aux1: int, aux2: int, output: int) -> None:
+    """
+    Recursive function that determines which moves to make to solve the
+    Tower of Anne Hoy (4 stools)
+    
+    n - Total number of cheeses that are not solved
+    stools -  Model Anne Hoy's stools holding cheeses
+    inp - input which cheese to be moved
+    aux1, aux2 - middle stools used to move cheeses
+    output - target goal for cheese
+    """ 
+    
     if n == 1:
         solver.select(stools.select_top_cheese(inp))
         time.sleep(solver.time_delay)
@@ -138,6 +145,16 @@ def solve(solver: 'SolvingController', n: int, stools: DomainStools, inp: int, a
 
 
 def tour_of_three_stools(solver: 'SolvingController', n: int, stools: DomainStools, inp: int, aux: int, output: int) -> None:
+    """
+    Recursive function that determines which moves to make to solve the
+    Tower of Hanoi (3 stools)
+    
+    n - Total number of cheeses that are not solved
+    stools -  Model Anne Hoy's stools holding cheeses
+    inp - input which cheese to be moved
+    aux1, aux2 - middle stools used to move cheeses
+    output     
+    """
     if n == 1:
         solver.select(stools.select_top_cheese(inp))
         time.sleep(solver.time_delay)
