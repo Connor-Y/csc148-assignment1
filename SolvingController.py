@@ -24,14 +24,13 @@ from CheeseView import CheeseView
 import tkinter as TI
 import time
 import math
-from i_solver2 import *
 
 
 class SolvingController:
     def __init__(self: 'SolvingController',
                  number_of_cheeses: int,
                  content_width: float, content_height: float,
-                 cheese_scale: float, time_delay: float, i_tup: tuple):
+                 cheese_scale: float, time_delay: float):
         """
         Initialize a new SolvingController.
 
@@ -42,10 +41,8 @@ class SolvingController:
         cheese_scale - height in pixels for showing cheese thicknesses,
                        and to scale cheese diameters
         time_delay - number of seconds to pause b/w highlighting a cheese to move and moving it
-        i_tup - optimal value of i for the split for a given n
         """
         
-        self.usi_tup = i_tup
         self.domain = DomainStools(4)
         self.cheese_to_move = None
         self.blinking = False
@@ -167,6 +164,7 @@ def tour_of_three_stools(solver: 'SolvingController',
     aux1 - middle stool used to move cheeses
     output - target goal for cheese    
     """
+    
     #If there is only one cheese left, move from current position to goal
     if n == 1:
         solver.select(stools.select_top_cheese(inp))
@@ -181,9 +179,43 @@ def tour_of_three_stools(solver: 'SolvingController',
         tour_of_three_stools(solver, n-1, stools, aux, inp, output)
     return None
 
+def i_solver(n: int, orig_n: int, store_i: dict) -> int: 
+    
+    """
+    Finds the optimal split value (i) for a given number of cheeses
+    
+    n - current number of cheeses,
+    orin_n - original (or total) number of cheeses
+    store_i - dict that each i value and its associated number of moves is stored
+    """
+    
+    if n == 1:
+        return 1
+    for i in range(1, n):
+        if n == orig_n:
+            store_i[i] = (2 * i_solver(n-i, orig_n, store_i) + (2 ** i) - 1)
+    return(2 * i_solver(n-i, orig_n, store_i) + (2 ** i) - 1)
+
+
+def final_i(n: int) -> tuple:
+    """
+    Stores all optimal given values of i for n cheeses
+    
+    n - number of cheeses
+    """
+
+    final_i = []
+    store_i = {}
+    #if n == 1, then i = 0, thus n equals 1 case is excluded
+    for n in range(2, n+1):
+            i_solver(n, n, store_i)
+            minkey = (min(store_i, key = store_i.get))
+            final_i.append(minkey)
+    return tuple(final_i)
+
 if __name__ == '__main__':
-    num_cheeses = 10
-    i_tup = tuple(final_i(num_cheeses))
-    f = SolvingController(num_cheeses, 1024, 320, 20, 1, i_tup)
+    num_cheeses = 6
+    i_tup = final_i(num_cheeses)
+    f = SolvingController(num_cheeses, 1024, 320, 20, 1)
     solve(f, f.number_of_cheeses, f.domain, 0, 1, 2, 3)
     TI.mainloop()
